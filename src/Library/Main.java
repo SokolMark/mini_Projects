@@ -4,77 +4,98 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+    private static boolean getAnswear(Scanner scanner) {
+        System.out.println("do you want to add book in library?");
+        String answear = scanner.nextLine();
+
+        return answear.equalsIgnoreCase("yes");
+    }
+
+    private static String isbnInput(Scanner scanner) {
+        System.out.print("Сome up with your ISBN code for the book: ");
+        return scanner.nextLine();
+
+    }
+
+    private static String authorInput(Scanner scanner) {
+        System.out.print("Enter book`s author: ");
+
+        return scanner.nextLine();
+    }
+
+    private static String titleInput(Scanner scanner) {
+        System.out.print("Enter book`s title: ");
+
+        return scanner.nextLine();
+    }
+
+    private static int yearInput(Scanner scanner) {
+        System.out.print("Enter book`s year: ");
+
+        return scanner.nextInt();
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         Library library = new Library();
 
-        System.out.print("do you want to add book in library? ");
+        boolean isAnswearYes = getAnswear(scanner);
 
-        System.out.println();
+        if (isAnswearYes) {
+            String title = titleInput(scanner);
+            String author = authorInput(scanner);
+            String isbn = isbnInput(scanner);
+            int year = yearInput(scanner);
 
-        String yesOrNo = scanner.nextLine();
-        if (yesOrNo.equalsIgnoreCase("yes")) {
-            System.out.print("Enter book`s title: ");
-            String inputTitle = scanner.nextLine();
-            System.out.println();
+            library.addBook(new Book(title, author, year, isbn));
 
-            System.out.print("Enter book`s author: ");
-            String inputAuthor = scanner.nextLine();
-            System.out.println();
-
-            System.out.print("Enter book`s year: ");
-            int inputYear = scanner.nextInt();
-            scanner.nextLine();
-            System.out.println();
-
-            System.out.print("Сome up with your ISBN code for the book: ");
-            String inputIsbn = scanner.nextLine();
-            System.out.println();
-
-            library.addBook(new Book(inputTitle, inputAuthor, inputYear, inputIsbn));
             library.displayAllBooks();
 
-            System.out.println("select one of the active " +
-                    " 1 - delete book," +
-                    " 2 - find book by name," +
-                    " 3 - find book by author," +
-                    " 4 - show all information about books," +
-                    " 5 - exit");
+        }
+
+        while (true) {
+            System.out.println("Select one of the options: " +
+                    "1 - Delete book, " +
+                    "2 - Find book by title, " +
+                    "3 - Find book by author, " +
+                    "4 - Show all information about books, " +
+                    "5 - add a book, " +
+                    "6 - Exit");
             int number = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine(); // Очистити буфер
+
             switch (number) {
                 case 1:
-                    System.out.println("Write book`s isbn for remove");
+                    System.out.println("Write book's ISBN for removal:");
                     String booksIsbn = scanner.nextLine();
-                    boolean isRebove = library.removeBook(booksIsbn);
-                    if (isRebove) {
-                        System.out.println("Book deleted");
+                    boolean isRemoved = library.removeBook(booksIsbn);
+                    if (isRemoved) {
+                        System.out.println("Book deleted.");
                     } else {
-                        System.out.println("No such book");
+                        System.out.println("No such book.");
                     }
-
                     library.displayAllBooks();
                     break;
 
                 case 2:
-                    System.out.println("Write book`s title");
+                    System.out.println("Write book's title:");
                     String booksTitle = scanner.nextLine();
                     List<Book> findBookByTitle = library.findBooksByTitle(booksTitle);
                     if (findBookByTitle.isEmpty()) {
-                        System.out.println("No such book");
+                        System.out.println("No such book.");
                     } else {
                         System.out.println("Book: " + findBookByTitle);
-
-                        break;
-
                     }
+                    break;
+
                 case 3:
-                    System.out.println("Write book`s author: ");
+                    System.out.println("Write book's author:");
                     String booksAuthor = scanner.nextLine();
                     List<Book> findBookByAuthor = library.findBooksByAuthor(booksAuthor);
                     if (findBookByAuthor.isEmpty()) {
-                        System.out.println("No such book");
+                        System.out.println("No such book.");
                     } else {
                         System.out.println("Book: " + findBookByAuthor);
                     }
@@ -85,10 +106,26 @@ public class Main {
                     break;
 
                 case 5:
-                    System.out.println("Exiting...");
+                    String title = titleInput(scanner);
+                    String author = authorInput(scanner);
+                    String isbn = isbnInput(scanner);
+                    int year = yearInput(scanner);
+
+                    library.addBook(new Book(title, author, year, isbn));
+
+                    library.displayAllBooks();
                     break;
+
+                case 6:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid option. Please try again.");
+                    break;
+
             }
         }
     }
 }
-
