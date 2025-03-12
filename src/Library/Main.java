@@ -4,55 +4,17 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-
-    private static boolean getAnswear(Scanner scanner) {
-        System.out.println("do you want to add book in library?");
-        String answear = scanner.nextLine();
-
-        return answear.equalsIgnoreCase("yes");
-    }
-
-    private static String isbnInput(Scanner scanner) {
-        System.out.print("Сome up with your ISBN code for the book: ");
-        return scanner.nextLine();
-
-    }
-
-    private static String authorInput(Scanner scanner) {
-        System.out.print("Enter book`s author: ");
-
-        return scanner.nextLine();
-    }
-
-    private static String titleInput(Scanner scanner) {
-        System.out.print("Enter book`s title: ");
-
-        return scanner.nextLine();
-    }
-
-    private static int yearInput(Scanner scanner) {
-        System.out.print("Enter book`s year: ");
-
-        return scanner.nextInt();
-    }
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        Data data = new Data();
         Library library = new Library();
 
-        boolean isAnswearYes = getAnswear(scanner);
+        boolean isAnswerYes = data.getAnswer(scanner);
 
-        if (isAnswearYes) {
-            String title = titleInput(scanner);
-            String author = authorInput(scanner);
-            String isbn = isbnInput(scanner);
-            int year = yearInput(scanner);
-
-            library.addBook(new Book(title, author, year, isbn));
-
+        if (isAnswerYes) {
+            data.getBook(library, scanner);
             library.displayAllBooks();
-
         }
 
         while (true) {
@@ -64,7 +26,7 @@ public class Main {
                     "5 - add a book, " +
                     "6 - Exit");
             int number = scanner.nextInt();
-            scanner.nextLine(); // Очистити буфер
+            scanner.nextLine();
 
             switch (number) {
                 case 1:
@@ -106,12 +68,7 @@ public class Main {
                     break;
 
                 case 5:
-                    String title = titleInput(scanner);
-                    String author = authorInput(scanner);
-                    String isbn = isbnInput(scanner);
-                    int year = yearInput(scanner);
-
-                    library.addBook(new Book(title, author, year, isbn));
+                    data.getBook(library, scanner);
 
                     library.displayAllBooks();
                     break;
@@ -124,7 +81,6 @@ public class Main {
                 default:
                     System.out.println("Invalid option. Please try again.");
                     break;
-
             }
         }
     }
