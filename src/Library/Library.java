@@ -7,6 +7,10 @@ public class Library {
 
     private final List<Book> books = new ArrayList<>();
 
+    public List<Book> getBooks(){
+        return books;
+    }
+
     public void addBook(Book book) {
         books.add(book);
     }
@@ -49,6 +53,5 @@ public class Library {
                 System.out.println(book);
             }
         }
-
     }
 }
